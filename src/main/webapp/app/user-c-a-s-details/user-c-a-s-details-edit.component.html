@@ -1,0 +1,13 @@
+<div class="d-flex flex-wrap mb-4">
+    <h1 class="flex-grow-1" i18n="@@userCASDetails.edit.headline">Edit UserCAS Details</h1>
+    <div>
+        <a routerLink="/userCASDetailss" class="btn btn-secondary" i18n="@@userCASDetails.edit.back">Back to list</a>
+    </div>
+</div>
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <app-input-row [group]="editForm" field="id" rowType="number" i18n-label="@@userCASDetails.id.label" label="Id" />
+    <app-input-row [group]="editForm" field="casType" rowType="radio" [options]="{'DETAILED': 'DETAILED', 'SUMMARY': 'SUMMARY'}" i18n-label="@@userCASDetails.casType.label" label="Cas Type" />
+    <app-input-row [group]="editForm" field="fileType" rowType="radio" [options]="{'CAMS': 'CAMS', 'KARVY': 'KARVY', 'UNKNOWN': 'UNKNOWN'}" i18n-label="@@userCASDetails.fileType.label" label="File Type" />
+    <app-input-row [group]="editForm" field="userInfo" rowType="select" [options]="userInfoValues" i18n-label="@@userCASDetails.userInfo.label" label="User Info" />
+    <input type="submit" i18n-value="@@userCASDetails.edit.headline" value="Edit UserCAS Details" class="btn btn-primary mt-4" />
+</form>
