@@ -7,10 +7,8 @@ import com.mfscreener.mfapp.userinfo.UserInfoRepository;
 import com.mfscreener.mfapp.util.NotFoundException;
 import com.mfscreener.mfapp.util.ReferencedWarning;
 import java.util.List;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserCASDetailsService {
@@ -19,7 +17,8 @@ public class UserCASDetailsService {
     private final UserInfoRepository userInfoRepository;
     private final UserFolioDetailsRepository userFolioDetailsRepository;
 
-    public UserCASDetailsService(final UserCASDetailsRepository userCASDetailsRepository,
+    public UserCASDetailsService(
+            final UserCASDetailsRepository userCASDetailsRepository,
             final UserInfoRepository userInfoRepository,
             final UserFolioDetailsRepository userFolioDetailsRepository) {
         this.userCASDetailsRepository = userCASDetailsRepository;
@@ -35,7 +34,8 @@ public class UserCASDetailsService {
     }
 
     public UserCASDetailsDTO get(final Long id) {
-        return userCASDetailsRepository.findById(id)
+        return userCASDetailsRepository
+                .findById(id)
                 .map(userCASDetails -> mapToDTO(userCASDetails, new UserCASDetailsDTO()))
                 .orElseThrow(NotFoundException::new);
     }
@@ -47,8 +47,8 @@ public class UserCASDetailsService {
     }
 
     public void update(final Long id, final UserCASDetailsDTO userCASDetailsDTO) {
-        final UserCASDetails userCASDetails = userCASDetailsRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
+        final UserCASDetails userCASDetails =
+                userCASDetailsRepository.findById(id).orElseThrow(NotFoundException::new);
         mapToEntity(userCASDetailsDTO, userCASDetails);
         userCASDetailsRepository.save(userCASDetails);
     }
@@ -57,21 +57,25 @@ public class UserCASDetailsService {
         userCASDetailsRepository.deleteById(id);
     }
 
-    private UserCASDetailsDTO mapToDTO(final UserCASDetails userCASDetails,
-            final UserCASDetailsDTO userCASDetailsDTO) {
+    private UserCASDetailsDTO mapToDTO(final UserCASDetails userCASDetails, final UserCASDetailsDTO userCASDetailsDTO) {
         userCASDetailsDTO.setId(userCASDetails.getId());
         userCASDetailsDTO.setCasType(userCASDetails.getCasType());
         userCASDetailsDTO.setFileType(userCASDetails.getFileType());
-        userCASDetailsDTO.setUserInfo(userCASDetails.getUserInfo() == null ? null : userCASDetails.getUserInfo().getId());
+        userCASDetailsDTO.setUserInfo(
+                userCASDetails.getUserInfo() == null
+                        ? null
+                        : userCASDetails.getUserInfo().getId());
         return userCASDetailsDTO;
     }
 
-    private UserCASDetails mapToEntity(final UserCASDetailsDTO userCASDetailsDTO,
-            final UserCASDetails userCASDetails) {
+    private UserCASDetails mapToEntity(final UserCASDetailsDTO userCASDetailsDTO, final UserCASDetails userCASDetails) {
         userCASDetails.setCasType(userCASDetailsDTO.getCasType());
         userCASDetails.setFileType(userCASDetailsDTO.getFileType());
-        final UserInfo userInfo = userCASDetailsDTO.getUserInfo() == null ? null : userInfoRepository.findById(userCASDetailsDTO.getUserInfo())
-                .orElseThrow(() -> new NotFoundException("userInfo not found"));
+        final UserInfo userInfo = userCASDetailsDTO.getUserInfo() == null
+                ? null
+                : userInfoRepository
+                        .findById(userCASDetailsDTO.getUserInfo())
+                        .orElseThrow(() -> new NotFoundException("userInfo not found"));
         userCASDetails.setUserInfo(userInfo);
         return userCASDetails;
     }
@@ -82,9 +86,10 @@ public class UserCASDetailsService {
 
     public ReferencedWarning getReferencedWarning(final Long id) {
         final ReferencedWarning referencedWarning = new ReferencedWarning();
-        final UserCASDetails userCASDetails = userCASDetailsRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final UserFolioDetails userCASDetailsUserFolioDetails = userFolioDetailsRepository.findFirstByUserCASDetails(userCASDetails);
+        final UserCASDetails userCASDetails =
+                userCASDetailsRepository.findById(id).orElseThrow(NotFoundException::new);
+        final UserFolioDetails userCASDetailsUserFolioDetails =
+                userFolioDetailsRepository.findFirstByUserCASDetails(userCASDetails);
         if (userCASDetailsUserFolioDetails != null) {
             referencedWarning.setKey("userCASDetails.userFolioDetails.userCASDetails.referenced");
             referencedWarning.addParam(userCASDetailsUserFolioDetails.getId());
@@ -92,5 +97,4 @@ public class UserCASDetailsService {
         }
         return null;
     }
-
 }

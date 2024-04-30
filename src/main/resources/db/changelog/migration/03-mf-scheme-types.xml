@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+    objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <property name="string.type" value="varchar(255)" dbms="!postgresql"/>
+    <property name="string.type" value="text" dbms="postgresql"/>
+    <property name="timestamp.type" value="timestamp" dbms="!postgresql"/>
+    <property name="timestamp.type" value="timestamptz" dbms="postgresql"/>
+
+    <changeSet author="appUser" id="create-sequence-scheme_type_id_seq">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="scheme_type_id_seq"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="scheme_type_id_seq"
+                        startValue="1"
+                        incrementBy="2"/>
+    </changeSet>
+
+    <changeSet id="create_mf_scheme_types" author="rajad (generated)">
+        <createTable tableName="mf_scheme_types">
+            <column name="id" type="INT" defaultValueSequenceNext="scheme_type_id_seq">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_mf_scheme_types"/>
+            </column>
+            <column name="type" type="${string.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="${string.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sub_category" type="${string.type}"/>
+            <column name="date_created" type="${timestamp.type}"/>
+            <column name="last_updated" type="${timestamp.type}"/>
+        </createTable>
+
+        <addUniqueConstraint
+            columnNames="type, category, sub_category"
+            constraintName="UK_MF_SCHEME_CATEGORY_MF_SCHEME_TYPE"
+            tableName="mf_scheme_types"/>
+
+        <addForeignKeyConstraint baseColumnNames="mf_scheme_type_id" baseTableName="mf_schemes"
+                                 constraintName="FK_MF_SCHEME_ON_MF_SCHEME_TYPE" referencedColumnNames="id"
+                                 referencedTableName="mf_scheme_types"/>
+    </changeSet>
+
+</databaseChangeLog>

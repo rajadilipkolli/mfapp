@@ -3,7 +3,6 @@ package com.mfscreener.mfapp.util;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-
 public class ReferencedWarning {
 
     private String key = null;
@@ -16,9 +15,7 @@ public class ReferencedWarning {
     public String toMessage() {
         String message = key;
         if (!params.isEmpty()) {
-            message += "," + params.stream()
-                    .map(Object::toString)
-                    .collect(Collectors.joining(","));
+            message += "," + params.stream().map(Object::toString).collect(Collectors.joining(","));
         }
         return message;
     }
@@ -38,5 +35,4 @@ public class ReferencedWarning {
     public void setParams(final ArrayList<Object> params) {
         this.params = params;
     }
-
 }

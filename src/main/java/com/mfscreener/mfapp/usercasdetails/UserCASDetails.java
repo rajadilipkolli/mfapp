@@ -2,6 +2,7 @@ package com.mfscreener.mfapp.usercasdetails;
 
 import com.mfscreener.mfapp.userfoliodetails.UserFolioDetails;
 import com.mfscreener.mfapp.userinfo.UserInfo;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -11,35 +12,23 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 @Entity
-@Table(name = "UserCASDetailses")
+@Table(name = "user_cas_details")
 @EntityListeners(AuditingEntityListener.class)
 public class UserCASDetails {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column
@@ -50,12 +39,11 @@ public class UserCASDetails {
     @Enumerated(EnumType.STRING)
     private FileType fileType;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_info_id", nullable = false, unique = true)
+    @OneToOne(mappedBy = "userCASDetails", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private UserInfo userInfo;
 
     @OneToMany(mappedBy = "userCASDetails")
-    private Set<UserFolioDetails> userFolioDetails;
+    private List<UserFolioDetails> userFolioDetails;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -93,15 +81,11 @@ public class UserCASDetails {
         return userInfo;
     }
 
-    public void setUserInfo(final UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public Set<UserFolioDetails> getUserFolioDetails() {
+    public List<UserFolioDetails> getUserFolioDetails() {
         return userFolioDetails;
     }
 
-    public void setUserFolioDetails(final Set<UserFolioDetails> userFolioDetails) {
+    public void setUserFolioDetails(final List<UserFolioDetails> userFolioDetails) {
         this.userFolioDetails = userFolioDetails;
     }
 
@@ -121,4 +105,20 @@ public class UserCASDetails {
         this.lastUpdated = lastUpdated;
     }
 
+    public UserCASDetails setUserInfo(UserInfo userInfo) {
+        if (userInfo == null) {
+            if (this.userInfo != null) {
+                this.userInfo.setUserCASDetails(null);
+            }
+        } else {
+            userInfo.setUserCASDetails(this);
+        }
+        this.userInfo = userInfo;
+        return this;
+    }
+
+    public void addUserFolioDetails(UserFolioDetails userFolioDetails) {
+        this.userFolioDetails.add(userFolioDetails);
+        userFolioDetails.setUserCASDetails(this);
+    }
 }
