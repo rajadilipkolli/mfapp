@@ -16,17 +16,17 @@ export const routes: Routes = [
     title: $localize`:@@home.index.headline:Welcome to your new app!`
   },
   {
-    path: 'userCASDetailss',
+    path: 'userCASDetails',
     component: UserCASDetailsListComponent,
     title: $localize`:@@userCASDetails.list.headline:UserCAS Detailses`
   },
   {
-    path: 'userCASDetailss/add',
+    path: 'userCASDetails/add',
     component: UserCASDetailsAddComponent,
     title: $localize`:@@userCASDetails.add.headline:Add UserCAS Details`
   },
   {
-    path: 'userCASDetailss/edit/:id',
+    path: 'userCASDetails/edit/:id',
     component: UserCASDetailsEditComponent,
     title: $localize`:@@userCASDetails.edit.headline:Edit UserCAS Details`
   },

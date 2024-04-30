@@ -2,9 +2,13 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
+    id 'jacoco'
     id 'com.github.node-gradle.node' version '7.0.2'
     id 'com.diffplug.spotless' version('6.25.0')
+    id 'org.sonarqube' version('5.0.0.4638')
 }
+
+apply from: "gradle/code-quality.gradle"
 
 group = 'com.mfscreener.mfapp'
 version = '0.0.1-SNAPSHOT'
@@ -63,10 +67,6 @@ processResources {
     dependsOn npmRunBuild
 }
 
-tasks.withType(Test) {
-    useJUnitPlatform()
-}
-
 spotless {
     java {
         importOrder()
@@ -77,3 +77,39 @@ spotless {
 }
 
 check.dependsOn spotlessCheck
+
+test {
+    useJUnitPlatform()
+    exclude "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform()
+
+    include "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    shouldRunAfter test
+
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+check.dependsOn integrationTest
+check.dependsOn jacocoTestReport
+
+tasks.register('testReport', TestReport) {
+    destinationDirectory = file("$buildFile/reports/tests")
+    testResults.from(test)
+}
+
+tasks.register('integrationTestReport', TestReport) {
+    destinationDirectory = file("$buildFile/reports/tests")
+    testResults.from(integrationTest)
+}
