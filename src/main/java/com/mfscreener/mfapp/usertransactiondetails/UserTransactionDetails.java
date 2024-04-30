@@ -4,13 +4,15 @@ import com.mfscreener.mfapp.userschemedetails.UserSchemeDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -18,24 +20,16 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 @Entity
-@Table(name = "UserTransactionDetailses")
+@Table(
+        name = "user_transaction_details",
+        indexes = {@Index(name = "user_details_idx_type_transaction_date", columnList = "transaction_date, type")})
 @EntityListeners(AuditingEntityListener.class)
 public class UserTransactionDetails {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column
@@ -57,7 +51,8 @@ public class UserTransactionDetails {
     private Double balance;
 
     @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
 
     @Column
     private String dividendRate;
@@ -78,96 +73,107 @@ public class UserTransactionDetails {
         return id;
     }
 
-    public void setId(final Long id) {
+    public UserTransactionDetails setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(final LocalDate transactionDate) {
+    public UserTransactionDetails setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(final String description) {
+    public UserTransactionDetails setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(final Double amount) {
+    public UserTransactionDetails setAmount(Double amount) {
         this.amount = amount;
+        return this;
     }
 
     public Double getUnits() {
         return units;
     }
 
-    public void setUnits(final Double units) {
+    public UserTransactionDetails setUnits(Double units) {
         this.units = units;
+        return this;
     }
 
     public Double getNav() {
         return nav;
     }
 
-    public void setNav(final Double nav) {
+    public UserTransactionDetails setNav(Double nav) {
         this.nav = nav;
+        return this;
     }
 
     public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(final Double balance) {
+    public UserTransactionDetails setBalance(Double balance) {
         this.balance = balance;
+        return this;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(final String type) {
+    public UserTransactionDetails setType(TransactionType type) {
         this.type = type;
+        return this;
     }
 
     public String getDividendRate() {
         return dividendRate;
     }
 
-    public void setDividendRate(final String dividendRate) {
+    public UserTransactionDetails setDividendRate(String dividendRate) {
         this.dividendRate = dividendRate;
+        return this;
     }
 
     public UserSchemeDetails getUserSchemeDetails() {
         return userSchemeDetails;
     }
 
-    public void setUserSchemeDetails(final UserSchemeDetails userSchemeDetails) {
+    public UserTransactionDetails setUserSchemeDetails(UserSchemeDetails userSchemeDetails) {
         this.userSchemeDetails = userSchemeDetails;
+        return this;
     }
 
     public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(final OffsetDateTime dateCreated) {
+    public UserTransactionDetails setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
     }
 
     public OffsetDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
+    public UserTransactionDetails setLastUpdated(OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+        return this;
     }
-
 }

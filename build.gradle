@@ -2,8 +2,13 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
+    id 'jacoco'
     id 'com.github.node-gradle.node' version '7.0.2'
+    id 'com.diffplug.spotless' version('6.25.0')
+    id 'org.sonarqube' version('5.0.0.4638')
 }
+
+apply from: "gradle/code-quality.gradle"
 
 group = 'com.mfscreener.mfapp'
 version = '0.0.1-SNAPSHOT'
@@ -22,6 +27,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-validation')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.liquibase:liquibase-core')
     runtimeOnly('org.postgresql:postgresql')
     implementation('io.github.wimdeblauwe:error-handling-spring-boot-starter:4.2.0')
     implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0')
@@ -29,13 +35,14 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-data-redis')
 
-    testAndDevelopmentOnly('org.springframework.boot:spring-boot-testcontainers')
-
     developmentOnly('org.springframework.boot:spring-boot-devtools')
     developmentOnly('org.springframework.boot:spring-boot-docker-compose')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('io.rest-assured:rest-assured')
+    testAndDevelopmentOnly('org.springframework.boot:spring-boot-testcontainers')
+    testAndDevelopmentOnly('org.testcontainers:junit-jupiter')
+    testAndDevelopmentOnly('org.testcontainers:postgresql')
 }
 
 node {
@@ -60,6 +67,49 @@ processResources {
     dependsOn npmRunBuild
 }
 
-tasks.withType(Test) {
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        palantirJavaFormat("2.42.0")
+        formatAnnotations()
+    }
+}
+
+check.dependsOn spotlessCheck
+
+test {
     useJUnitPlatform()
+    exclude "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform()
+
+    include "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    shouldRunAfter test
+
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+check.dependsOn integrationTest
+check.dependsOn jacocoTestReport
+
+tasks.register('testReport', TestReport) {
+    destinationDirectory = file("$buildFile/reports/tests")
+    testResults.from(test)
+}
+
+tasks.register('integrationTestReport', TestReport) {
+    destinationDirectory = file("$buildFile/reports/tests")
+    testResults.from(integrationTest)
 }

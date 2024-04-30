@@ -38,3 +38,4 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+.angular/cache/

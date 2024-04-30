@@ -2,7 +2,6 @@ package com.mfscreener.mfapp.userinfo;
 
 import jakarta.validation.constraints.Size;
 
-
 public class UserInfoDTO {
 
     private Long id;
@@ -58,5 +57,4 @@ public class UserInfoDTO {
     public void setAddress(final String address) {
         this.address = address;
     }
-
 }

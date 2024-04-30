@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { UserCASDetailsListComponent } from './user-c-a-s-details/user-c-a-s-details-list.component';
-import { UserCASDetailsAddComponent } from './user-c-a-s-details/user-c-a-s-details-add.component';
-import { UserCASDetailsEditComponent } from './user-c-a-s-details/user-c-a-s-details-edit.component';
-import { UserInfoListComponent } from './user-info/user-info-list.component';
-import { UserInfoAddComponent } from './user-info/user-info-add.component';
-import { UserInfoEditComponent } from './user-info/user-info-edit.component';
+import { UserCASDetailsListComponent } from './usercasdetails/usercasdetails-list.component';
+import { UserCASDetailsAddComponent } from './usercasdetails/usercasdetails-add.component';
+import { UserCASDetailsEditComponent } from './usercasdetails/usercasdetails-edit.component';
+import { UserInfoListComponent } from './userinfo/userinfo-list.component';
+import { UserInfoAddComponent } from './userinfo/userinfo-add.component';
+import { UserInfoEditComponent } from './userinfo/userinfo-edit.component';
 import { ErrorComponent } from './error/error.component';
 
 
@@ -16,17 +16,17 @@ export const routes: Routes = [
     title: $localize`:@@home.index.headline:Welcome to your new app!`
   },
   {
-    path: 'userCASDetailss',
+    path: 'userCASDetails',
     component: UserCASDetailsListComponent,
     title: $localize`:@@userCASDetails.list.headline:UserCAS Detailses`
   },
   {
-    path: 'userCASDetailss/add',
+    path: 'userCASDetails/add',
     component: UserCASDetailsAddComponent,
     title: $localize`:@@userCASDetails.add.headline:Add UserCAS Details`
   },
   {
-    path: 'userCASDetailss/edit/:id',
+    path: 'userCASDetails/edit/:id',
     component: UserCASDetailsEditComponent,
     title: $localize`:@@userCASDetails.edit.headline:Edit UserCAS Details`
   },

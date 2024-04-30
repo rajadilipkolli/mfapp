@@ -10,31 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 @Entity
-@Table(name = "MfSchemeTypes")
+@Table(name = "mf_scheme_types", uniqueConstraints = @UniqueConstraint(columnNames = {"type", "category"}))
 @EntityListeners(AuditingEntityListener.class)
 public class MfSchemeType {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scheme_type_id_generator")
+    @SequenceGenerator(name = "scheme_type_id_generator", sequenceName = "scheme_type_id_seq", allocationSize = 2)
+    private Integer id;
 
     @Column
     private String type;
@@ -46,7 +38,7 @@ public class MfSchemeType {
     private String subCategory;
 
     @OneToMany(mappedBy = "mfSchemeType")
-    private Set<MfScheme> mfschemes;
+    private Set<MfScheme> mfSchemes;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -56,60 +48,66 @@ public class MfSchemeType {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public MfSchemeType setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(final String type) {
+    public MfSchemeType setType(String type) {
         this.type = type;
+        return this;
     }
 
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(final String category) {
+    public MfSchemeType setCategory(String category) {
         this.category = category;
+        return this;
     }
 
     public String getSubCategory() {
         return subCategory;
     }
 
-    public void setSubCategory(final String subCategory) {
+    public MfSchemeType setSubCategory(String subCategory) {
         this.subCategory = subCategory;
+        return this;
     }
 
-    public Set<MfScheme> getMfschemes() {
-        return mfschemes;
+    public Set<MfScheme> getMfSchemes() {
+        return mfSchemes;
     }
 
-    public void setMfschemes(final Set<MfScheme> mfschemes) {
-        this.mfschemes = mfschemes;
+    public MfSchemeType setMfSchemes(Set<MfScheme> mfSchemes) {
+        this.mfSchemes = mfSchemes;
+        return this;
     }
 
     public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(final OffsetDateTime dateCreated) {
+    public MfSchemeType setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
     }
 
     public OffsetDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
+    public MfSchemeType setLastUpdated(OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+        return this;
     }
-
 }

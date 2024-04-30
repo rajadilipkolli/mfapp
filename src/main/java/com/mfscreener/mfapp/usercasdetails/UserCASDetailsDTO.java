@@ -2,7 +2,6 @@ package com.mfscreener.mfapp.usercasdetails;
 
 import jakarta.validation.constraints.NotNull;
 
-
 public class UserCASDetailsDTO {
 
     private Long id;
@@ -11,8 +10,7 @@ public class UserCASDetailsDTO {
 
     private FileType fileType;
 
-    @NotNull
-    @UserCASDetailsUserInfoUnique
+    @NotNull @UserCASDetailsUserInfoUnique
     private Long userInfo;
 
     public Long getId() {
@@ -46,5 +44,4 @@ public class UserCASDetailsDTO {
     public void setUserInfo(final Long userInfo) {
         this.userInfo = userInfo;
     }
-
 }

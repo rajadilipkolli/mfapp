@@ -12,32 +12,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 @Entity
-@Table(name = "UserSchemeDetailses")
+@Table(
+        name = "user_scheme_details",
+        uniqueConstraints = {
+            @UniqueConstraint(
+                    name = "uc_userschemedetailsentity",
+                    columnNames = {"isin", "user_folio_details_id"})
+        })
 @EntityListeners(AuditingEntityListener.class)
 public class UserSchemeDetails {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column
@@ -75,7 +72,7 @@ public class UserSchemeDetails {
     private UserFolioDetails userFolioDetails;
 
     @OneToMany(mappedBy = "userSchemeDetails")
-    private Set<UserTransactionDetails> userTransactionDetails;
+    private List<UserTransactionDetails> userTransactionDetails = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -89,121 +86,140 @@ public class UserSchemeDetails {
         return id;
     }
 
-    public void setId(final Long id) {
+    public UserSchemeDetails setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getScheme() {
         return scheme;
     }
 
-    public void setScheme(final String scheme) {
+    public UserSchemeDetails setScheme(String scheme) {
         this.scheme = scheme;
+        return this;
     }
 
     public String getIsin() {
         return isin;
     }
 
-    public void setIsin(final String isin) {
+    public UserSchemeDetails setIsin(String isin) {
         this.isin = isin;
+        return this;
     }
 
     public String getAdvisor() {
         return advisor;
     }
 
-    public void setAdvisor(final String advisor) {
+    public UserSchemeDetails setAdvisor(String advisor) {
         this.advisor = advisor;
+        return this;
     }
 
     public String getRta() {
         return rta;
     }
 
-    public void setRta(final String rta) {
+    public UserSchemeDetails setRta(String rta) {
         this.rta = rta;
+        return this;
     }
 
     public String getRtaCode() {
         return rtaCode;
     }
 
-    public void setRtaCode(final String rtaCode) {
+    public UserSchemeDetails setRtaCode(String rtaCode) {
         this.rtaCode = rtaCode;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(final String type) {
+    public UserSchemeDetails setType(String type) {
         this.type = type;
+        return this;
     }
 
     public Long getAmfi() {
         return amfi;
     }
 
-    public void setAmfi(final Long amfi) {
+    public UserSchemeDetails setAmfi(Long amfi) {
         this.amfi = amfi;
+        return this;
     }
 
     public String getOpen() {
         return open;
     }
 
-    public void setOpen(final String open) {
+    public UserSchemeDetails setOpen(String open) {
         this.open = open;
+        return this;
     }
 
     public String getClose() {
         return close;
     }
 
-    public void setClose(final String close) {
+    public UserSchemeDetails setClose(String close) {
         this.close = close;
+        return this;
     }
 
     public String getCloseCalculated() {
         return closeCalculated;
     }
 
-    public void setCloseCalculated(final String closeCalculated) {
+    public UserSchemeDetails setCloseCalculated(String closeCalculated) {
         this.closeCalculated = closeCalculated;
+        return this;
     }
 
     public UserFolioDetails getUserFolioDetails() {
         return userFolioDetails;
     }
 
-    public void setUserFolioDetails(final UserFolioDetails userFolioDetails) {
+    public UserSchemeDetails setUserFolioDetails(UserFolioDetails userFolioDetails) {
         this.userFolioDetails = userFolioDetails;
+        return this;
     }
 
-    public Set<UserTransactionDetails> getUserTransactionDetails() {
+    public List<UserTransactionDetails> getUserTransactionDetails() {
         return userTransactionDetails;
     }
 
-    public void setUserTransactionDetails(
-            final Set<UserTransactionDetails> userTransactionDetails) {
+    public UserSchemeDetails setUserTransactionDetails(List<UserTransactionDetails> userTransactionDetails) {
         this.userTransactionDetails = userTransactionDetails;
+        return this;
     }
 
     public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(final OffsetDateTime dateCreated) {
+    public UserSchemeDetails setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
     }
 
     public OffsetDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
+    public UserSchemeDetails setLastUpdated(OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+        return this;
     }
 
+    public UserSchemeDetails addUserTransactionDetails(UserTransactionDetails userTransactionDetails) {
+        this.userTransactionDetails.add(userTransactionDetails);
+        userTransactionDetails.setUserSchemeDetails(this);
+        return this;
+    }
 }

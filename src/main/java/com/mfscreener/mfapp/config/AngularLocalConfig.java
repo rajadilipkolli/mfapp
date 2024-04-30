@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @Configuration
 @Profile("local")
 public class AngularLocalConfig {
@@ -19,8 +18,6 @@ public class AngularLocalConfig {
             public void addCorsMappings(final CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*").allowedOrigins("http://localhost:4200");
             }
-
         };
     }
-
 }

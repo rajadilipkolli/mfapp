@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping(value = "/api/userInfos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserInfoResource {
@@ -46,8 +45,8 @@ public class UserInfoResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateUserInfo(@PathVariable(name = "id") final Long id,
-            @RequestBody @Valid final UserInfoDTO userInfoDTO) {
+    public ResponseEntity<Long> updateUserInfo(
+            @PathVariable(name = "id") final Long id, @RequestBody @Valid final UserInfoDTO userInfoDTO) {
         userInfoService.update(id, userInfoDTO);
         return ResponseEntity.ok(id);
     }
@@ -62,5 +61,4 @@ public class UserInfoResource {
         userInfoService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

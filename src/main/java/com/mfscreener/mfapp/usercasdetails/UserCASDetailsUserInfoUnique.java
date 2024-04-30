@@ -16,16 +16,13 @@ import java.lang.annotation.Target;
 import java.util.Map;
 import org.springframework.web.servlet.HandlerMapping;
 
-
 /**
  * Validate that the id value isn't taken yet.
  */
-@Target({ FIELD, METHOD, ANNOTATION_TYPE })
+@Target({FIELD, METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(
-        validatedBy = UserCASDetailsUserInfoUnique.UserCASDetailsUserInfoUniqueValidator.class
-)
+@Constraint(validatedBy = UserCASDetailsUserInfoUnique.UserCASDetailsUserInfoUniqueValidator.class)
 public @interface UserCASDetailsUserInfoUnique {
 
     String message() default "{Exists.userCASDetails.userInfo}";
@@ -40,8 +37,7 @@ public @interface UserCASDetailsUserInfoUnique {
         private final HttpServletRequest request;
 
         public UserCASDetailsUserInfoUniqueValidator(
-                final UserCASDetailsService userCASDetailsService,
-                final HttpServletRequest request) {
+                final UserCASDetailsService userCASDetailsService, final HttpServletRequest request) {
             this.userCASDetailsService = userCASDetailsService;
             this.request = request;
         }
@@ -52,16 +48,17 @@ public @interface UserCASDetailsUserInfoUnique {
                 // no value present
                 return true;
             }
-            @SuppressWarnings("unchecked") final Map<String, String> pathVariables =
-                    ((Map<String, String>)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE));
+            @SuppressWarnings("unchecked")
+            final Map<String, String> pathVariables =
+                    ((Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE));
             final String currentId = pathVariables.get("id");
-            if (currentId != null && value.equals(userCASDetailsService.get(Long.parseLong(currentId)).getUserInfo())) {
+            if (currentId != null
+                    && value.equals(
+                            userCASDetailsService.get(Long.parseLong(currentId)).getUserInfo())) {
                 // value hasn't changed
                 return true;
             }
             return !userCASDetailsService.userInfoExists(value);
         }
-
     }
-
 }
