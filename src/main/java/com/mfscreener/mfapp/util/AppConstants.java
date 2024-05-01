@@ -17,5 +17,4 @@ public final class AppConstants {
             .parseDefaulting(ChronoField.YEAR_OF_ERA, LocalDate.now().getYear()) // Default year to current year
             .toFormatter(Locale.ENGLISH); // Ensure English locale for month names
     public static final LocalDate GRAND_FATHERED_DATE = LocalDate.of(2018, 1, 31);
-    ;
 }
