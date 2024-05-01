@@ -1,6 +1,6 @@
 package com.mfscreener.mfapp.mfscheme;
 
-import com.mfscreener.mfapp.mfschemenav.MFSchemeNav;
+import com.mfscreener.mfapp.mfschemenav.MfSchemeNav;
 import com.mfscreener.mfapp.mfschemetype.MfSchemeType;
 import com.mfscreener.mfapp.mfschemetype.MfSchemeTypeService;
 import com.mfscreener.mfapp.util.AppConstants;
@@ -38,7 +38,7 @@ public class MfSchemeDtoToEntityMapper {
     }
 
     private void updateMFScheme(MfSchemeDTO scheme, MfScheme mfScheme) {
-        MFSchemeNav mfSchemenavEntity = new MFSchemeNav();
+        MfSchemeNav mfSchemenavEntity = new MfSchemeNav();
         mfSchemenavEntity.setNav("N.A.".equals(scheme.nav()) ? 0D : Double.parseDouble(scheme.nav()));
         // Use the flexible formatter to parse the date
         LocalDate parsedDate = LocalDate.parse(scheme.date(), AppConstants.FLEXIBLE_DATE_FORMATTER);

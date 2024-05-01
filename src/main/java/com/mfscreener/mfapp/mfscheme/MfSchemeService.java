@@ -26,4 +26,9 @@ public class MfSchemeService {
     public List<MfScheme> saveAllEntities(List<MfScheme> list) {
         return mfSchemeRepository.saveAll(list);
     }
+
+    public void loadHistoricalDataForClosedOrMergedSchemes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadHistoricalDataForClosedOrMergedSchemes'");
+    }
 }

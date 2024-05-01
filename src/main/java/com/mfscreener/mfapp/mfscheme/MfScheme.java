@@ -1,6 +1,6 @@
 package com.mfscreener.mfapp.mfscheme;
 
-import com.mfscreener.mfapp.mfschemenav.MFSchemeNav;
+import com.mfscreener.mfapp.mfschemenav.MfSchemeNav;
 import com.mfscreener.mfapp.mfschemetype.MfSchemeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +45,7 @@ public class MfScheme {
     private MfSchemeType mfSchemeType;
 
     @OneToMany(mappedBy = "mfScheme")
-    private List<MFSchemeNav> mfSchemeNavs = new ArrayList<>();
+    private List<MfSchemeNav> mfSchemeNavs = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -109,11 +109,11 @@ public class MfScheme {
         return this;
     }
 
-    public List<MFSchemeNav> getMfSchemeNavs() {
+    public List<MfSchemeNav> getMfSchemeNavs() {
         return mfSchemeNavs;
     }
 
-    public MfScheme setMfSchemeNavs(List<MFSchemeNav> mfSchemeNavs) {
+    public MfScheme setMfSchemeNavs(List<MfSchemeNav> mfSchemeNavs) {
         this.mfSchemeNavs = mfSchemeNavs;
         return this;
     }
@@ -136,7 +136,7 @@ public class MfScheme {
         return this;
     }
 
-    public MfScheme addSchemeNav(MFSchemeNav mfSchemeNav) {
+    public MfScheme addSchemeNav(MfSchemeNav mfSchemeNav) {
         mfSchemeNavs.add(mfSchemeNav);
         mfSchemeNav.setMfScheme(this);
         return this;
