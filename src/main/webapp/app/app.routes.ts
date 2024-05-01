@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'mfschemes/load/:id',
-    component: UserInfoEditComponent,
+    component: MfschemeListComponent,
     title: $localize`:@@mfschemes.load.headline:MfScheme Info`
   },
   {
