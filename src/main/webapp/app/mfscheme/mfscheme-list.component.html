@@ -1,0 +1,41 @@
+<div class="d-flex flex-wrap mb-4">
+    <h1 class="flex-grow-1" i18n="@@mfschemes.list.headline">Mutual Fund Schemes</h1>
+</div>
+@if (!mfschemes || mfschemes.length === 0) {
+<div i18n="@@mfschemes.list.empty">No Mutual fund Schemes could be found.</div>
+} @else {
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th scope="col" i18n="@@mfschemes.schemeCode.label">Scheme Code</th>
+                <th scope="col" i18n="@@mfschemes.amc.label">AMC</th>
+                <th scope="col" i18n="@@mfschemes.payout.label">ISIN</th>
+                <th scope="col" i18n="@@mfschemes.schemeName.label">Scheme Name</th>
+                <th scope="col" i18n="@@mfschemes.nav.label">NAV</th>
+                <th scope="col" i18n="@@mfschemes.date.label">NAV Date</th>
+                <th scope="col" i18n="@@mfschemes.schemeType.label">Scheme Type</th>
+                <th><!-- --></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (mfscheme of mfschemes; track mfscheme.schemeCode) {
+            <tr>
+                <td>{{ mfscheme.schemeCode }}</td>
+                <td>{{ mfscheme.amc }}</td>
+                <td>{{ mfscheme.payout }}</td>
+                <td>{{ mfscheme.schemeName }}</td>
+                <td>{{ mfscheme.nav }}</td>
+                <td>{{ mfscheme.date }}</td>
+                <td>{{ mfscheme.schemeType }}</td>
+                <td>
+                    <div class="float-end text-nowrap">
+                        <button type="button" (click)="loadMfSchemeByCode(mfscheme.schemeCode!)" class="btn btn-sm btn-secondary" i18n="@@mfschemes.list.load">Load</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

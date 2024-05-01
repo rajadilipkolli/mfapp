@@ -21,14 +21,17 @@ public class MfSchemeService {
     private final MfSchemeRepository mfSchemeRepository;
     private final ResourceLoader resourceLoader;
     private final MfSchemeDtoToEntityMapper mfSchemeDtoToEntityMapper;
+    private final MfSchemeEntityToDtoMapper mfSchemeEntityToDtoMapper;
 
     public MfSchemeService(
             MfSchemeRepository mfSchemeRepository,
             ResourceLoader resourceLoader,
-            MfSchemeDtoToEntityMapper mfSchemeDtoToEntityMapper) {
+            MfSchemeDtoToEntityMapper mfSchemeDtoToEntityMapper,
+            MfSchemeEntityToDtoMapper mfSchemeEntityToDtoMapper) {
         this.mfSchemeRepository = mfSchemeRepository;
         this.resourceLoader = resourceLoader;
         this.mfSchemeDtoToEntityMapper = mfSchemeDtoToEntityMapper;
+        this.mfSchemeEntityToDtoMapper = mfSchemeEntityToDtoMapper;
     }
 
     public long count() {
@@ -84,5 +87,18 @@ public class MfSchemeService {
             LOGGER.error("Error reading NAV data file: {}", e.getMessage());
             throw new DataProcessingException("Error processing NAV data file");
         }
+    }
+
+    public List<MfSchemeDTO> loadAll() {
+        return mfSchemeRepository.findAll().stream()
+                .map(mfSchemeEntityToDtoMapper::convertToDTO)
+                .toList();
+    }
+
+    public MfSchemeDTO loadBySchemeCode(Long schemeCode) {
+        return mfSchemeRepository
+                .findBySchemeId(schemeCode)
+                .map(mfSchemeEntityToDtoMapper::convertToDTO)
+                .orElse(null);
     }
 }

@@ -8,9 +8,7 @@ jacoco {
 def jacocoExcludes = [
     '**/*Application.*',
     '**/config/**',
-    '**/models/**',
-    '**/entities/**',
-    '**/exceptions/**',
+    '**/web/exception/**',
     '**/dtos/**',
     '**/*Constants*',
 ]
