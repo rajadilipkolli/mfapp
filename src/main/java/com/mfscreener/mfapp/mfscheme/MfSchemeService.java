@@ -1,6 +1,6 @@
 package com.mfscreener.mfapp.mfscheme;
 
-import com.mfscreener.mfapp.web.exception.FileNotFoundException;
+import com.mfscreener.mfapp.web.exception.DataProcessingException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,7 +81,8 @@ public class MfSchemeService {
             List<MfScheme> persistedEntities = mfSchemeRepository.saveAll(mfSchemeEntities);
             LOGGER.info("Persisted : {} rows", persistedEntities.size());
         } catch (IOException e) {
-            throw new FileNotFoundException(e.getMessage());
+            LOGGER.error("Error reading NAV data file: {}", e.getMessage());
+            throw new DataProcessingException("Error processing NAV data file");
         }
     }
 }
