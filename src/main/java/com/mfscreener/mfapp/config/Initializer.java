@@ -1,9 +1,10 @@
 package com.mfscreener.mfapp.config;
 
-import com.mfscreener.mfapp.mfscheme.MfSchemeDTO;
 import com.mfscreener.mfapp.mfscheme.MfScheme;
+import com.mfscreener.mfapp.mfscheme.MfSchemeDTO;
 import com.mfscreener.mfapp.mfscheme.MfSchemeDtoToEntityMapper;
 import com.mfscreener.mfapp.mfscheme.MfSchemeService;
+import com.mfscreener.mfapp.mfschemenav.MfSchemeNavService;
 import com.mfscreener.mfapp.util.AppConstants;
 import com.mfscreener.mfapp.web.service.RestClientService;
 import java.io.BufferedReader;
@@ -27,17 +28,20 @@ public class Initializer implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Initializer.class);
 
-    private final MfSchemeService schemeService;
+    private final MfSchemeService mfSchemeService;
     private final MfSchemeDtoToEntityMapper mfSchemeDtoToEntityMapper;
     private final RestClientService restClientService;
+    private final MfSchemeNavService mfSchemeNavService;
 
     public Initializer(
-            MfSchemeService schemeService,
+            MfSchemeService mfSchemeService,
             MfSchemeDtoToEntityMapper mfSchemeDtoToEntityMapper,
-            RestClientService restClientService) {
-        this.schemeService = schemeService;
+            RestClientService restClientService,
+            MfSchemeNavService mfSchemeNavService) {
+        this.mfSchemeService = mfSchemeService;
         this.mfSchemeDtoToEntityMapper = mfSchemeDtoToEntityMapper;
         this.restClientService = restClientService;
+        this.mfSchemeNavService = mfSchemeNavService;
     }
 
     @Override
@@ -81,21 +85,21 @@ public class Initializer implements CommandLineRunner {
                 }
             }
             LOGGER.info(
-                    "All Funds parsed in {} milliseconds, total funds loaded :{}",
+                    "All Funds parsed in {} milliseconds, total funds parsed :{}",
                     (System.currentTimeMillis() - start),
                     chopArrayList.size());
 
-            if (schemeService.count() != chopArrayList.size()) {
+            if (mfSchemeService.count() != chopArrayList.size()) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start("saving fundNames");
                 List<MfScheme> toBeInsertedList = new ArrayList<>();
-                List<Long> schemeCodesList = schemeService.getAllAvailableSchemeCodeFromDb();
+                List<Long> schemeCodesList = mfSchemeService.getAllAvailableSchemeCodeFromDb();
                 chopArrayList.removeIf(s -> schemeCodesList.contains(s.schemeCode()));
                 chopArrayList.forEach(mfSchemeDTO -> {
                     MfScheme mfSchemeEntity = mfSchemeDtoToEntityMapper.mapMFSchemeDTOToMFSchemeEntity(mfSchemeDTO);
                     toBeInsertedList.add(mfSchemeEntity);
                 });
-                schemeService.saveAllEntities(toBeInsertedList);
+                mfSchemeService.saveAllEntities(toBeInsertedList);
                 stopWatch.stop();
                 LOGGER.info("saved in db in : {} sec", stopWatch.getTotalTimeSeconds());
             }
@@ -103,9 +107,17 @@ public class Initializer implements CommandLineRunner {
             // eating as we can't do much, it should be set when available using Nightly job
             LOGGER.error("Unable to load data from :{}", AppConstants.AMFI_WEBSITE_LINK, httpClientErrorException);
         }
+
+        if (!mfSchemeNavService.navLoadedFor31Jan2018ForExistingSchemes()) {
+            mfSchemeNavService.loadHistoricalNavOn31Jan2018ForExistingSchemes();
+        }
+
+        if (!mfSchemeNavService.navLoadedForClosedOrMergedSchemes()) {
+            mfSchemeService.loadHistoricalDataForClosedOrMergedSchemes();
+        }
     }
 
-    private static void handleMultipleTokenRow(
+    private void handleMultipleTokenRow(
             String[] tokenize, String amc, String schemeType, List<MfSchemeDTO> chopArrayList) {
         final String schemecode = tokenize[0];
         final String payout = tokenize[1];

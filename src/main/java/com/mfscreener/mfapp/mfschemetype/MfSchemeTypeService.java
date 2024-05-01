@@ -12,7 +12,7 @@ public class MfSchemeTypeService {
         this.mfSchemeTypeRepository = mfSchemeTypeRepository;
     }
 
-    public MfSchemeType findOrCreateMFSchemeTypeEntity(String type, String category, @Nullable String subCategory) {
+    public MfSchemeType findOrCreateMfSchemeType(String type, String category, @Nullable String subCategory) {
         MfSchemeType byTypeAndCategoryAndSubCategory =
                 mfSchemeTypeRepository.findByTypeAndCategoryAndSubCategory(type, category, subCategory);
         if (byTypeAndCategoryAndSubCategory == null) {

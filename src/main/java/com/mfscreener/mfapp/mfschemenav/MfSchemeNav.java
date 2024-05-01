@@ -29,7 +29,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
                     columnNames = {"nav", "nav_date", "mf_scheme_id"})
         })
 @EntityListeners(AuditingEntityListener.class)
-public class MFSchemeNav {
+public class MfSchemeNav {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -58,7 +58,7 @@ public class MFSchemeNav {
         return id;
     }
 
-    public MFSchemeNav setId(Long id) {
+    public MfSchemeNav setId(Long id) {
         this.id = id;
         return this;
     }
@@ -67,7 +67,7 @@ public class MFSchemeNav {
         return nav;
     }
 
-    public MFSchemeNav setNav(Double nav) {
+    public MfSchemeNav setNav(Double nav) {
         this.nav = nav;
         return this;
     }
@@ -76,7 +76,7 @@ public class MFSchemeNav {
         return navDate;
     }
 
-    public MFSchemeNav setNavDate(LocalDate navDate) {
+    public MfSchemeNav setNavDate(LocalDate navDate) {
         this.navDate = navDate;
         return this;
     }
@@ -85,7 +85,7 @@ public class MFSchemeNav {
         return mfScheme;
     }
 
-    public MFSchemeNav setMfScheme(MfScheme mfScheme) {
+    public MfSchemeNav setMfScheme(MfScheme mfScheme) {
         this.mfScheme = mfScheme;
         return this;
     }
@@ -94,7 +94,7 @@ public class MFSchemeNav {
         return dateCreated;
     }
 
-    public MFSchemeNav setDateCreated(OffsetDateTime dateCreated) {
+    public MfSchemeNav setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }
@@ -103,7 +103,7 @@ public class MFSchemeNav {
         return lastUpdated;
     }
 
-    public MFSchemeNav setLastUpdated(OffsetDateTime lastUpdated) {
+    public MfSchemeNav setLastUpdated(OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
     }
@@ -119,7 +119,7 @@ public class MFSchemeNav {
                 ? hp.getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        MFSchemeNav that = (MFSchemeNav) o;
+        MfSchemeNav that = (MfSchemeNav) o;
         return Objects.equals(getNav(), that.getNav())
                 && Objects.equals(
                         getMfScheme().getSchemeId(), that.getMfScheme().getSchemeId())

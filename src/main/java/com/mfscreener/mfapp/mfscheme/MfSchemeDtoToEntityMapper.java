@@ -1,6 +1,6 @@
 package com.mfscreener.mfapp.mfscheme;
 
-import com.mfscreener.mfapp.mfschemenav.MFSchemeNav;
+import com.mfscreener.mfapp.mfschemenav.MfSchemeNav;
 import com.mfscreener.mfapp.mfschemetype.MfSchemeType;
 import com.mfscreener.mfapp.mfschemetype.MfSchemeTypeService;
 import com.mfscreener.mfapp.util.AppConstants;
@@ -38,14 +38,14 @@ public class MfSchemeDtoToEntityMapper {
     }
 
     private void updateMFScheme(MfSchemeDTO scheme, MfScheme mfScheme) {
-        MFSchemeNav mfSchemenavEntity = new MFSchemeNav();
-        mfSchemenavEntity.setNav("N.A.".equals(scheme.nav()) ? 0D : Double.parseDouble(scheme.nav()));
+        MfSchemeNav mfSchemeNav = new MfSchemeNav();
+        mfSchemeNav.setNav("N.A.".equals(scheme.nav()) ? 0D : Double.parseDouble(scheme.nav()));
         // Use the flexible formatter to parse the date
         LocalDate parsedDate = LocalDate.parse(scheme.date(), AppConstants.FLEXIBLE_DATE_FORMATTER);
-        mfSchemenavEntity.setNavDate(parsedDate);
-        mfScheme.addSchemeNav(mfSchemenavEntity);
+        mfSchemeNav.setNavDate(parsedDate);
+        mfScheme.addSchemeNav(mfSchemeNav);
 
-        MfSchemeType mfSchemeTypeEntity = null;
+        MfSchemeType mfSchemeType = null;
         String schemeType = scheme.schemeType();
         String type = schemeType.substring(0, schemeType.indexOf('(')).strip();
         if (schemeType.contains("(") && schemeType.contains("-") && schemeType.contains(")")) {
@@ -55,17 +55,17 @@ public class MfSchemeDtoToEntityMapper {
             String subCategory = schemeType
                     .substring(schemeType.indexOf('-') + 1, schemeType.length() - 1)
                     .strip();
-            mfSchemeTypeEntity = mfSchemeTypeService.findOrCreateMFSchemeTypeEntity(type, category, subCategory);
+            mfSchemeType = mfSchemeTypeService.findOrCreateMfSchemeType(type, category, subCategory);
         } else {
             if (!schemeType.contains("-")) {
                 String category = schemeType
                         .substring(schemeType.indexOf('(') + 1, schemeType.length() - 1)
                         .strip();
-                mfSchemeTypeEntity = mfSchemeTypeService.findOrCreateMFSchemeTypeEntity(type, category, null);
+                mfSchemeType = mfSchemeTypeService.findOrCreateMfSchemeType(type, category, null);
             } else {
                 LOGGER.error("Unable to parse schemeType :{}", schemeType);
             }
         }
-        mfScheme.setMfSchemeType(mfSchemeTypeEntity);
+        mfScheme.setMfSchemeType(mfSchemeType);
     }
 }
