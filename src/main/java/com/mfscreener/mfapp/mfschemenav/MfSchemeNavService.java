@@ -12,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
+@Transactional(readOnly = true)
 public class MfSchemeNavService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MfSchemeNavService.class);
@@ -32,6 +34,7 @@ public class MfSchemeNavService {
         this.mfSchemeNavRepository = mfSchemeNavRepository;
         this.mfSchemeRepository = mfSchemeRepository;
         this.resourceLoader = resourceLoader;
+        transactionTemplate.setPropagationBehaviorName("PROPAGATION_REQUIRES_NEW");
         this.transactionTemplate = transactionTemplate;
     }
 
