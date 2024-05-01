@@ -44,12 +44,12 @@ export class MfschemeListComponent implements OnInit, OnDestroy {
   }
 
   loadMfSchemeByCode(schemeCode: number) {
-    this.mfschemes = [],
-      this.mfSchemeService.getMfSchemeInfo(schemeCode)
-        .subscribe({
-          next: (data) => this.mfschemes?.concat(data),
-          error: (error) => this.errorHandler.handleServerError(error.error)
-        });
+    this.mfschemes = [];
+    this.mfSchemeService.getMfSchemeInfo(schemeCode)
+      .subscribe({
+        next: (data) => this.mfschemes?.concat(data),
+        error: (error) => this.errorHandler.handleServerError(error.error)
+      });
   }
 
 }
