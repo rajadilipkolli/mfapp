@@ -39,11 +39,11 @@ public class MfSchemeNavService {
     }
 
     public boolean navLoadedFor31Jan2018ForExistingSchemes() {
-        return mfSchemeNavRepository.countByNavDate(AppConstants.GRAND_FATHERED_DATE) >= 5908;
+        return mfSchemeNavRepository.countByNavDate(AppConstants.GRAND_FATHERED_DATE) >= 5905;
     }
 
     public boolean navLoadedForClosedOrMergedSchemes() {
-        return mfSchemeNavRepository.countByNavDate(AppConstants.GRAND_FATHERED_DATE) >= 9000;
+        return mfSchemeNavRepository.countByNavDate(AppConstants.GRAND_FATHERED_DATE) >= 9500;
     }
 
     public void loadHistoricalNavOn31Jan2018ForExistingSchemes() {

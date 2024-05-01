@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { UserCASDetailsListComponent } from './usercasdetails/usercasdetails-list.component';
-import { UserCASDetailsAddComponent } from './usercasdetails/usercasdetails-add.component';
-import { UserCASDetailsEditComponent } from './usercasdetails/usercasdetails-edit.component';
 import { UserInfoListComponent } from './userinfo/userinfo-list.component';
 import { UserInfoAddComponent } from './userinfo/userinfo-add.component';
 import { UserInfoEditComponent } from './userinfo/userinfo-edit.component';
 import { ErrorComponent } from './error/error.component';
+import { MfschemeListComponent } from './mfscheme/mfscheme-list.component';
 
 
 export const routes: Routes = [
@@ -16,19 +14,14 @@ export const routes: Routes = [
     title: $localize`:@@home.index.headline:Welcome to your new app!`
   },
   {
-    path: 'userCASDetails',
-    component: UserCASDetailsListComponent,
-    title: $localize`:@@userCASDetails.list.headline:UserCAS Detailses`
+    path: 'mfschemes',
+    component: MfschemeListComponent,
+    title: $localize`@@mfschemes.list.headline:MfSchemes`
   },
   {
-    path: 'userCASDetails/add',
-    component: UserCASDetailsAddComponent,
-    title: $localize`:@@userCASDetails.add.headline:Add UserCAS Details`
-  },
-  {
-    path: 'userCASDetails/edit/:id',
-    component: UserCASDetailsEditComponent,
-    title: $localize`:@@userCASDetails.edit.headline:Edit UserCAS Details`
+    path: 'mfschemes/load/:id',
+    component: UserInfoEditComponent,
+    title: $localize`:@@mfschemes.load.headline:MfScheme Info`
   },
   {
     path: 'userInfos',
