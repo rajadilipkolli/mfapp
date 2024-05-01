@@ -1,7 +1,7 @@
 package com.mfscreener.mfapp.config;
 
-import com.mfscreener.mfapp.mfscheme.MfSchemeDTO;
 import com.mfscreener.mfapp.mfscheme.MfScheme;
+import com.mfscreener.mfapp.mfscheme.MfSchemeDTO;
 import com.mfscreener.mfapp.mfscheme.MfSchemeDtoToEntityMapper;
 import com.mfscreener.mfapp.mfscheme.MfSchemeService;
 import com.mfscreener.mfapp.mfschemenav.MfSchemeNavService;
@@ -107,14 +107,14 @@ public class Initializer implements CommandLineRunner {
             // eating as we can't do much, it should be set when available using Nightly job
             LOGGER.error("Unable to load data from :{}", AppConstants.AMFI_WEBSITE_LINK, httpClientErrorException);
         }
-    }
 
-    if (!mfSchemeNavService.navLoadedFor31Jan2018ForExistingSchemes()) {
-        mfSchemeNavService.loadHistoricalNavOn31Jan2018ForExistingSchemes();
-    }
+        if (!mfSchemeNavService.navLoadedFor31Jan2018ForExistingSchemes()) {
+            mfSchemeNavService.loadHistoricalNavOn31Jan2018ForExistingSchemes();
+        }
 
-    if (!mfSchemeNavService.navLoadedForClosedOrMergedSchemes()) {
-        mfSchemeService.loadHistoricalDataForClosedOrMergedSchemes();
+        if (!mfSchemeNavService.navLoadedForClosedOrMergedSchemes()) {
+            mfSchemeService.loadHistoricalDataForClosedOrMergedSchemes();
+        }
     }
 
     private void handleMultipleTokenRow(
