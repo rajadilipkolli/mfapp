@@ -20,7 +20,7 @@ public class TestMfAppApplication {
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgreSQLContainer() {
-        return new PostgreSQLContainer<>(DockerImageName.parse("postgres").withTag("16.2-alpine"));
+        return new PostgreSQLContainer<>(DockerImageName.parse("postgres").withTag("16.3-alpine"));
     }
 
     public static void main(String[] args) {
