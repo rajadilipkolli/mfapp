@@ -14,7 +14,7 @@ public class TestMfAppApplication {
     @Bean
     @ServiceConnection(name = "redis")
     GenericContainer<?> redisContainer() {
-        return new GenericContainer<>(DockerImageName.parse("redis").withTag("7.2.4-alpine")).withExposedPorts(6379);
+        return new GenericContainer<>(DockerImageName.parse("redis").withTag("7.2.5-alpine")).withExposedPorts(6379);
     }
 
     @Bean
