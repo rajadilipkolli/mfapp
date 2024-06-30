@@ -30,7 +30,7 @@ dependencies {
     implementation('org.liquibase:liquibase-core')
     runtimeOnly('org.postgresql:postgresql')
     implementation('io.github.wimdeblauwe:error-handling-spring-boot-starter:4.3.0')
-    implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0')
+    implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0')
     implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-data-redis')
