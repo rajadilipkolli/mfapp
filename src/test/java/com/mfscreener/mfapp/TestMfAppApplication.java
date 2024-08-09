@@ -14,13 +14,13 @@ public class TestMfAppApplication {
     @Bean
     @ServiceConnection(name = "redis")
     GenericContainer<?> redisContainer() {
-        return new GenericContainer<>(DockerImageName.parse("redis").withTag("7.2.5-alpine")).withExposedPorts(6379);
+        return new GenericContainer<>(DockerImageName.parse("redis").withTag("7.4.0-alpine")).withExposedPorts(6379);
     }
 
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgreSQLContainer() {
-        return new PostgreSQLContainer<>(DockerImageName.parse("postgres").withTag("16.3-alpine"));
+        return new PostgreSQLContainer<>(DockerImageName.parse("postgres").withTag("16.4-alpine"));
     }
 
     public static void main(String[] args) {
